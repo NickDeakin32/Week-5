@@ -1,0 +1,96 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<title> Prac 5 </title>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script> 
+</head>
+
+<body>
+
+
+<div id="app">
+	<p v-bind:title="message">{{message}}</p>
+	<ol>
+		<li v-for="sth in todos"		
+		>{{sth.text}}</li>
+	</ol>
+	<ol>
+		<to-do
+			v-for="sth in todos"
+			v-bind:todo ="sth.text"
+		></to-do>
+	</ol>
+	<p><button v-on:click="increase">How many times have you clicked me?</button>{{count}}</p>
+	
+	
+	<p><counter
+		v-for="sth in todos"
+		v-bind:info="sth.text"
+	></counter>		
+	</p>
+	
+	
+	<div v-bind:style="{ fontSize: postFontSize + 'em' }">
+		<blog-post
+			v-for="post in posts"
+			v-bind:post= "post"
+			v-on:enlarge-text = "postFontSize += 0.1"
+		></blog-post>
+	
+	</div>
+
+</div>
+
+<script>
+Vue.component("blog-post",{
+	props:["post"],
+	template: '<div><h1>{{post.title}}</h1><h6>{{post.id}}</h6><button v-on:click="$emit(\'enlarge-text\')">Enlarge Text</button></div>',
+})
+
+Vue.component("to-do",{
+	props:["todo"],
+	template: "<li>{{todo}}</li>",
+
+})
+
+Vue.component("counter",{
+	props:["info"],
+	template: "<button v-on:click='counter ++;pointer --'>{{counter}} {{info}} {{pointer}}</button>",
+	data: function(){
+		return {
+			counter: 0,
+			pointer: 0,
+		}	
+	}
+
+})
+
+var app = new Vue({
+	el:"#app",
+	data: {
+		message: "I'm Learning Vue!",
+		todos:[
+			{key:1, text:"item 1"},
+			{key:2, text:"item 2"},
+			{key:3, text:"item 3"},
+		],
+		count:0,
+		posts: [
+		  { id: 1, title: 'This text' },
+		  { id: 2, title: 'only gets' },
+		  { id: 3, title: 'bigger!' }
+		],
+		postFontSize:1,
+	},
+	methods: {
+		increase: function() {
+			this.count= this.count +1;
+		},	
+	}
+})
+
+
+</script>
+
+</body>
+</html>
